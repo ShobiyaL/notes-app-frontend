@@ -1,3 +1,16 @@
+# website link 
+https://notes-app-23cf2b.netlify.app/
+
+# backend github link
+https://github.com/ShobiyaL/notes-app-backend
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
