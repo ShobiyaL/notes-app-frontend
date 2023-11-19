@@ -1,5 +1,7 @@
 # website link 
 https://notes-app-23cf2b.netlify.app/
+# login email: vidhya123@gmail.com
+# login password:vidhya123
 
 # backend github link
 https://github.com/ShobiyaL/notes-app-backend
