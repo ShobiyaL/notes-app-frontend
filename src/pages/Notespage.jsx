@@ -6,6 +6,8 @@ import {
   Wrap,
   WrapItem,
   Stack,
+  Text,
+  Box,
   Alert,
   AlertIcon,
   AlertTitle,
@@ -35,8 +37,9 @@ import { getNotes } from '../redux/actions/notesActions';
 import { MdOutlinePlaylistAdd, MdTimeToLeave } from 'react-icons/md';
 
 import { createNote } from '../redux/actions/notesActions';
+import FontsPreference from '../components/FontsPreference';
 
-const Notespage = () => {
+const Notespage = ({ notes }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
@@ -50,7 +53,7 @@ const Notespage = () => {
   // console.log(title, description);
   const notesList = useSelector((state) => state.notes);
   // console.log(notesList);
-  const { loading, error, notes } = notesList;
+  const { loading, error } = notesList;
   // console.log(notes);
 
   useEffect(() => {
@@ -83,7 +86,7 @@ const Notespage = () => {
           <AlertTitle>OOPS!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-      ) : (
+      ) : notes.length > 0 ? (
         notes.map((note) => {
           return (
             <WrapItem key={note._id}>
@@ -94,6 +97,10 @@ const Notespage = () => {
             </WrapItem>
           );
         })
+      ) : (
+        <Box mt='20'>
+          <Text>No notes found..</Text>
+        </Box>
       )}
       <Button
         position='fixed'
@@ -138,6 +145,7 @@ const Notespage = () => {
             </ModalBody>
 
             <ModalFooter>
+              {/* <FontsPreference/> */}
               <Button colorScheme='blue' mr={3} onClick={handleSubmit}>
                 Save
               </Button>

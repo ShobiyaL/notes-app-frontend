@@ -20,7 +20,7 @@ export const login = (email, password) => async (dispatch) => {
       { email, password },
       config
     );
-    console.log(data);
+    // console.log(data);
     dispatch(userLogin(data));
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {

@@ -28,26 +28,26 @@ import { deleteNote, updateNote } from '../redux/actions/notesActions';
 import { useDispatch } from 'react-redux';
 
 export default function NoteCard({ note }) {
-  //   console.log(note);
+  console.log(note);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   const dispatch = useDispatch();
-  const { title, description, _id, createdAt } = note;
+  const { title, description, _id, createdAt, updatedAt } = note;
   // console.log(title, _id);
   const [tempTitle, setTempTitle] = useState(title);
   const [tempDesc, setTempDesc] = useState(description);
   let date;
   if (createdAt) {
     const dateString = new Date(createdAt);
-    const day = dateString.getUTCDate();
-    const month = dateString.getUTCMonth() + 1; // Adding 1 because getUTCMonth() returns values from 0 to 11
+    const day = dateString.toDateString();
 
-    date = `${day}/${month}`;
+    date = day;
   }
 
   let handleSubmit = () => {
     dispatch(updateNote(_id, { title: tempTitle, description: tempDesc }));
+    date = new Date(updatedAt).toDateString();
     onClose();
   };
 

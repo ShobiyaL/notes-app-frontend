@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
   HStack,
   useToast,
   Link,
@@ -27,18 +30,14 @@ import {
   MoonIcon,
   SunIcon,
   ChevronDownIcon,
+  SearchIcon,
 } from '@chakra-ui/icons';
 import { TbNotes } from 'react-icons/tb';
-import { GiBalloons } from 'react-icons/gi';
-import { HiShoppingCart } from 'react-icons/hi';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/actions/userActions';
 import { CgProfile } from 'react-icons/cg';
-import {
-  MdLocalShipping,
-  MdLogout,
-  MdOutlineAdminPanelSettings,
-} from 'react-icons/md';
+import { MdLogout } from 'react-icons/md';
 
 //defining the links
 const links = [{ linkName: 'Notes', path: '/' }];
@@ -62,7 +61,7 @@ const NavLink = ({ path, children }) => {
     </Link>
   );
 };
-const Navbar = () => {
+const Navbar = ({ handleSearch, searchText }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
@@ -88,7 +87,7 @@ const Navbar = () => {
           display={{ md: 'none' }}
           onClick={isOpen ? onClose : onOpen}
         />
-        <HStack>
+        <HStack spacing={100}>
           <Link
             as={ReactLink}
             to='/'
@@ -109,6 +108,18 @@ const Navbar = () => {
             </Flex>
           </Link>
         </HStack>
+        <InputGroup>
+          <InputLeftElement pointerEvents='none'>
+            <SearchIcon />
+          </InputLeftElement>
+          <Input
+            variant='filled'
+            placeholder='Type to search..'
+            width={['100%', '80%', '60%', '40%']}
+            value={searchText}
+            onChange={(event) => handleSearch(event.target.value)}
+          />
+        </InputGroup>
         <Flex alignItems='center'>
           <NavLink>
             <Icon
