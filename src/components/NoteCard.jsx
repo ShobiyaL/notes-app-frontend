@@ -25,18 +25,19 @@ import {
 import { MdEditNote } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { deleteNote, updateNote } from '../redux/actions/notesActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function NoteCard({ note }) {
-  console.log(note);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   const dispatch = useDispatch();
-  const { title, description, _id, createdAt, updatedAt } = note;
-  // console.log(title, _id);
+
+  const { title, description, _id, createdAt, updatedAt, selectedColor } = note;
+  // console.log(selectedColor);
   const [tempTitle, setTempTitle] = useState(title);
   const [tempDesc, setTempDesc] = useState(description);
+
   let date;
   if (createdAt) {
     const dateString = new Date(createdAt);
@@ -47,17 +48,16 @@ export default function NoteCard({ note }) {
 
   let handleSubmit = () => {
     dispatch(updateNote(_id, { title: tempTitle, description: tempDesc }));
-    date = new Date(updatedAt).toDateString();
     onClose();
   };
-
+  let color = selectedColor ? selectedColor : 'white';
   return (
     <Center py={6}>
       <Box
         maxW={'445px'}
         w={'full'}
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        bg={useColorModeValue('white', 'pink.900')}
+        bg={useColorModeValue(`${color}`, 'pink.900')}
         boxShadow={'2xl'}
         rounded={'md'}
         p={6}
@@ -90,6 +90,7 @@ export default function NoteCard({ note }) {
         >
           <Button onClick={onOpen}>
             <MdEditNote />
+
             <Modal
               initialFocusRef={initialRef}
               finalFocusRef={finalRef}

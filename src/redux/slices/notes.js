@@ -5,6 +5,7 @@ const initialState = {
   error: null,
   notes: [],
   note: null,
+  selectedColor: '',
 };
 
 export const notesSlice = createSlice({
@@ -22,17 +23,46 @@ export const notesSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.notes = payload;
+      state.selectedColor = '';
     },
-    // setNote: (state, payload) => {
-    //   console.log(payload);
-    //   state.notes = [...state.notes, payload];
-    //   state.loading = false;
-    //   state.error = null;
-    // },
+    selectColor: (state, { payload }) => {
+      console.log(payload);
+      state.selectedColor = payload;
+    },
+    setNote: (state, { payload }) => {
+      // console.log(payload);
+      state.notes = [...state.notes, payload];
+    },
+    editNote: (state, { payload }) => {
+      const updatedNote = payload;
+      // console.log(updatedNote);
+      let index = state.notes.findIndex((note) => note._id === updatedNote._id);
+      // console.log(index);
+      if (index !== -1) {
+        state.notes = state.notes.map((note, i) =>
+          i === index ? updatedNote : note
+        );
+      }
+    },
+    removeNote: (state, { payload }) => {
+      // console.log(payload);
+      let index = state.notes.findIndex((note) => note._id === payload._id);
+      if (index !== -1) {
+        state.notes = state.notes.filter((note, i) => i !== index);
+      }
+    },
   },
 });
 
-export const { setLoading, setError, setNotes, setNote } = notesSlice.actions;
+export const {
+  setLoading,
+  setError,
+  setNotes,
+  setNote,
+  selectColor,
+  editNote,
+  removeNote,
+} = notesSlice.actions;
 
 export default notesSlice.reducer;
 export const notesSelector = (state) => state.notes;

@@ -38,6 +38,8 @@ import { MdOutlinePlaylistAdd, MdTimeToLeave } from 'react-icons/md';
 
 import { createNote } from '../redux/actions/notesActions';
 import FontsPreference from '../components/FontsPreference';
+import Colors from '../components/Colors';
+import { selectColor, setNote } from '../redux/slices/notes';
 
 const Notespage = ({ notes }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,18 +52,27 @@ const Notespage = ({ notes }) => {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
   // console.log(title, description);
   const notesList = useSelector((state) => state.notes);
   // console.log(notesList);
-  const { loading, error } = notesList;
+
+  const { loading, error, selectedColor } = notesList;
+  console.log(selectedColor);
   // console.log(notes);
 
   useEffect(() => {
     dispatch(getNotes());
   }, [dispatch]);
+  let handleColor = (c) => {
+    // console.log(c);
+    dispatch(selectColor(c));
+  };
 
   let handleSubmit = () => {
     dispatch(createNote({ title, description }));
+
+    dispatch(selectColor(selectedColor));
     setTitle('');
     setDescription('');
     onClose();
@@ -102,6 +113,7 @@ const Notespage = ({ notes }) => {
           <Text>No notes found..</Text>
         </Box>
       )}
+
       <Button
         position='fixed'
         bottom={{ base: '20px', md: '30px', lg: '40px' }}
@@ -146,7 +158,8 @@ const Notespage = ({ notes }) => {
 
             <ModalFooter>
               {/* <FontsPreference/> */}
-              <Button colorScheme='blue' mr={3} onClick={handleSubmit}>
+              <Colors handleColor={handleColor} />
+              <Button colorScheme='blue' mx={3} onClick={handleSubmit}>
                 Save
               </Button>
               <Button onClick={onClose}>Cancel</Button>

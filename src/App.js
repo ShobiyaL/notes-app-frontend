@@ -6,23 +6,37 @@ import Navbar from './components/Navbar';
 import Loginpage from './pages/Loginpage';
 import Signuppage from './pages/Signuppage';
 import NotesListpage from './pages/Notespage';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+// import { logout } from './redux/actions/userActions';
 
 function App() {
   const [searchText, setSearchText] = useState('');
-  console.log(searchText);
+  // console.log(searchText);
+  // const userInfo = useSelector((state) => state.user);
+  // console.log(userInfo);
+  // const dispatch = useDispatch();
+
   let handleSearch = (text) => {
-    console.log(text);
+    // console.log(text);
     setSearchText(text);
+  };
+  let handleSearchClick = () => {
+    setSearchText('');
   };
   const notesObj = useSelector((state) => state.notes);
   const { notes } = notesObj;
-  console.log(notes);
+  // console.log(notes);
   return (
     <>
       <ChakraProvider>
         <BrowserRouter>
-          <Navbar handleSearch={handleSearch} searchText={searchText} />
+          <Navbar
+            handleSearch={handleSearch}
+            searchText={searchText}
+            handleSearchClick={handleSearchClick}
+          />
+
           <main>
             <Routes>
               <Route path='/' element={<Homepage />} />

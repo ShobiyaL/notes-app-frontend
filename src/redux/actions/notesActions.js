@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { setLoading, setError, setNotes, setNote } from '../slices/notes';
+import {
+  setLoading,
+  setError,
+  setNotes,
+  setNote,
+  editNote,
+  removeNote,
+} from '../slices/notes';
 
 export const getNotes = () => async (dispatch, getState) => {
   dispatch(setLoading(true));
@@ -52,8 +59,8 @@ export const createNote = (note) => async (dispatch, getState) => {
       note,
       config
     );
-
-    dispatch(getNotes());
+    console.log(data.data);
+    dispatch(setNote(data.data));
   } catch (error) {
     console.log(error);
     dispatch(
@@ -81,12 +88,14 @@ export const updateNote = (_id, note) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.patch(
+      // `http://localhost:8008/api/v1/notes/${_id}`,
       `https://notes-app-backend-2q54.onrender.com/api/v1/notes/${_id}`,
       note,
       config
     );
 
-    dispatch(getNotes());
+    // console.log(data.data);
+    dispatch(editNote(data.data));
   } catch (error) {
     console.log(error);
     dispatch(
@@ -114,12 +123,13 @@ export const deleteNote = (_id) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.delete(
+      // `http://localhost:8008/api/v1/notes/${_id}`,
       `https://notes-app-backend-2q54.onrender.com/api/v1/notes/${_id}`,
 
       config
     );
-
-    dispatch(getNotes());
+    // console.log(data.data);
+    dispatch(removeNote(data.data));
   } catch (error) {
     console.log(error);
     dispatch(

@@ -61,7 +61,7 @@ const NavLink = ({ path, children }) => {
     </Link>
   );
 };
-const Navbar = ({ handleSearch, searchText }) => {
+const Navbar = ({ handleSearch, searchText, handleSearchClick }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ const Navbar = ({ handleSearch, searchText }) => {
             </Flex>
           </Link>
         </HStack>
-        <InputGroup>
+        <InputGroup onClick={handleSearchClick}>
           <InputLeftElement pointerEvents='none'>
             <SearchIcon />
           </InputLeftElement>
@@ -118,6 +118,7 @@ const Navbar = ({ handleSearch, searchText }) => {
             width={['100%', '80%', '60%', '40%']}
             value={searchText}
             onChange={(event) => handleSearch(event.target.value)}
+            // onClick={handleSearchClick}
           />
         </InputGroup>
         <Flex alignItems='center'>
