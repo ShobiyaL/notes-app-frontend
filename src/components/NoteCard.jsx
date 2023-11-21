@@ -21,22 +21,41 @@ import {
   ModalBody,
   ModalCloseButton,
   useColorModeValue,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogBody,
 } from '@chakra-ui/react';
 import { MdEditNote } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { deleteNote, updateNote } from '../redux/actions/notesActions';
 import { useDispatch, useSelector } from 'react-redux';
+import Colors from './Colors';
+import FontsPreference from '../components/FontsPreference';
 
-export default function NoteCard({ note }) {
+import { selectColor, setNote, updateNoteColor } from '../redux/slices/notes';
+
+export default function NoteCard({ _note }) {
+  // State for handling delete confirmation dialog
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteNoteId, setDeleteNoteId] = useState(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   const dispatch = useDispatch();
 
-  const { title, description, _id, createdAt, updatedAt, selectedColor } = note;
-  // console.log(selectedColor);
+  const { title, description, _id, createdAt, updatedAt, color, font } = _note;
+  // console.log(font);
   const [tempTitle, setTempTitle] = useState(title);
   const [tempDesc, setTempDesc] = useState(description);
+  const notesList = useSelector((state) => state.notes);
+  // console.log(notesList);
+  const cancelRef = useRef();
+  const { loading, error, selectedColor } = notesList;
+  // console.log(selectedColor);
 
   let date;
   if (createdAt) {
@@ -50,19 +69,42 @@ export default function NoteCard({ note }) {
     dispatch(updateNote(_id, { title: tempTitle, description: tempDesc }));
     onClose();
   };
-  let color = selectedColor ? selectedColor : 'white';
+  let handleColor = (c) => {
+    // console.log(c);
+    dispatch(selectColor(c));
+  };
+  const handleDeleteNote = (_id) => {
+    // console.log(_id);
+    setDeleteNoteId(_id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteNote = () => {
+    if (deleteNoteId) {
+      dispatch(deleteNote(_id));
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
+  const cancelDeleteNote = () => {
+    setDeleteNoteId(null);
+    setIsDeleteDialogOpen(false);
+  };
+
   return (
     <Center py={6}>
       <Box
         maxW={'445px'}
         w={'full'}
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        bg={useColorModeValue(`${color}`, 'pink.900')}
+
+        bg={useColorModeValue(`${color ? color : 'white'}`, 'pink.900')}
         boxShadow={'2xl'}
         rounded={'md'}
         p={6}
         overflow={'hidden'}
         // h='250px'
+        fontFamily={font}
       >
         <Stack>
           <Heading
@@ -125,6 +167,7 @@ export default function NoteCard({ note }) {
                 </ModalBody>
 
                 <ModalFooter>
+                  <Colors handleColor={handleColor} />
                   <Button colorScheme='blue' mr={3} onClick={handleSubmit}>
                     Save
                   </Button>
@@ -133,13 +176,34 @@ export default function NoteCard({ note }) {
               </ModalContent>
             </Modal>
           </Button>
-          <Button
-            onClick={() => {
-              dispatch(deleteNote(_id));
-            }}
-          >
+          <Button onClick={() => handleDeleteNote(_id)}>
             <AiOutlineDelete />
           </Button>
+          <AlertDialog
+            isOpen={isDeleteDialogOpen}
+            leastDestructiveRef={cancelRef}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  Confirm Delete
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure you want to delete this note?
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={cancelDeleteNote}>
+                    Cancel
+                  </Button>
+                  <Button colorScheme='red' onClick={confirmDeleteNote} ml={3}>
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
         </Stack>
       </Box>
     </Center>

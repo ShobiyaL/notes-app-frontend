@@ -6,6 +6,7 @@ const initialState = {
   notes: [],
   note: null,
   selectedColor: '',
+  selectedFont: '',
 };
 
 export const notesSlice = createSlice({
@@ -29,10 +30,15 @@ export const notesSlice = createSlice({
       console.log(payload);
       state.selectedColor = payload;
     },
+    selectFont: (state, { payload }) => {
+      console.log(payload);
+      state.selectedFont = payload;
+    },
     setNote: (state, { payload }) => {
-      // console.log(payload);
+      console.log(payload);
       state.notes = [...state.notes, payload];
     },
+
     editNote: (state, { payload }) => {
       const updatedNote = payload;
       // console.log(updatedNote);
@@ -60,6 +66,7 @@ export const {
   setNotes,
   setNote,
   selectColor,
+  selectFont,
   editNote,
   removeNote,
 } = notesSlice.actions;

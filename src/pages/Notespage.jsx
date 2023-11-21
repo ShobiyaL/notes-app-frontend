@@ -34,12 +34,13 @@ import NoteCard from '../components/NoteCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getNotes } from '../redux/actions/notesActions';
-import { MdOutlinePlaylistAdd, MdTimeToLeave } from 'react-icons/md';
+import { MdCancel, MdOutlinePlaylistAdd, MdTimeToLeave } from 'react-icons/md';
 
 import { createNote } from '../redux/actions/notesActions';
 import FontsPreference from '../components/FontsPreference';
 import Colors from '../components/Colors';
-import { selectColor, setNote } from '../redux/slices/notes';
+import { selectColor, selectFont } from '../redux/slices/notes';
+import { TbClick } from 'react-icons/tb';
 
 const Notespage = ({ notes }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,8 +58,8 @@ const Notespage = ({ notes }) => {
   const notesList = useSelector((state) => state.notes);
   // console.log(notesList);
 
-  const { loading, error, selectedColor } = notesList;
-  console.log(selectedColor);
+  const { loading, error, selectedColor, selectedFont } = notesList;
+
   // console.log(notes);
 
   useEffect(() => {
@@ -68,13 +69,24 @@ const Notespage = ({ notes }) => {
     // console.log(c);
     dispatch(selectColor(c));
   };
-
+  let onSelectFont = (f) => {
+    // console.log(f);
+    dispatch(selectFont(f));
+  };
   let handleSubmit = () => {
-    dispatch(createNote({ title, description }));
+    dispatch(
+      createNote({
+        title,
+        description,
+        color: selectedColor ? selectedColor : 'white',
+        font: selectedFont ? selectedFont : '',
+      })
+    );
 
-    dispatch(selectColor(selectedColor));
     setTitle('');
     setDescription('');
+    dispatch(selectColor(''));
+    dispatch(selectFont(''));
     onClose();
   };
 
@@ -103,7 +115,7 @@ const Notespage = ({ notes }) => {
             <WrapItem key={note._id}>
               {/* <Center w='250px' h='550px'> */}
               <Center w='250px'>
-                <NoteCard note={note} />
+                <NoteCard _note={note} handleColor={handleColor} />
               </Center>
             </WrapItem>
           );
@@ -157,12 +169,16 @@ const Notespage = ({ notes }) => {
             </ModalBody>
 
             <ModalFooter>
-              {/* <FontsPreference/> */}
+              <FontsPreference onSelectFont={onSelectFont} />
               <Colors handleColor={handleColor} />
-              <Button colorScheme='blue' mx={3} onClick={handleSubmit}>
-                Save
+              <Button mx={3} onClick={handleSubmit}>
+                save
+                <TbClick color='black' />
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button colorScheme='red' onClick={onClose}>
+                {/* cancel */}
+                <MdCancel size={25} />
+              </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

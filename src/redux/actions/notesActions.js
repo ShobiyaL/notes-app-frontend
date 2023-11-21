@@ -6,6 +6,7 @@ import {
   setNote,
   editNote,
   removeNote,
+  selectColor,
 } from '../slices/notes';
 
 export const getNotes = () => async (dispatch, getState) => {
@@ -60,7 +61,12 @@ export const createNote = (note) => async (dispatch, getState) => {
       config
     );
     console.log(data.data);
-    dispatch(setNote(data.data));
+    console.log(note.color);
+    let result = data.data;
+    let color = note.color;
+    let font = note.font;
+    dispatch(setNote({ ...result, color, font }));
+    // dispatch(selectColor(note.color));
   } catch (error) {
     console.log(error);
     dispatch(

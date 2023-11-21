@@ -1,15 +1,10 @@
-.sidebar {
+.colors_container {
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
-.sidebar img {
-  width: 60px;
-  cursor: pointer;
-}
-
-.sidebar_list {
+.color_list {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -19,14 +14,10 @@
   /* background-color: black; */
 }
 
-.sidebar_list_active {
-  /* height: 300px; */
-}
-
-.sidebar_list_item {
+.color_list_item {
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
+  height: 12px;
+  width: 12px;
   list-style: none;
   /* background-color: black; */
 }
