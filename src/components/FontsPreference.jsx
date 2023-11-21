@@ -15,9 +15,10 @@ const FontsPreference = ({ selectedFont, onSelectFont }) => {
       <Select
         value={selectedFont}
         onChange={(e) => onSelectFont(e.target.value)}
+        style={{ cursor: 'pointer' }}
       >
         {fontOptions.map((font) => (
-          <option key={font} value={font}>
+          <option key={font} value={font} style={{ cursor: 'pointer' }}>
             {font}
           </option>
         ))}

@@ -21,3 +21,6 @@
   list-style: none;
   /* background-color: black; */
 }
+.color_list_item:hover {
+  cursor: pointer;
+}

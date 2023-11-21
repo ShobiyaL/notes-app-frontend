@@ -7,7 +7,6 @@ import {
   userRegister,
   setToken,
 } from '../slices/user';
-import { jwtDecode } from 'jwt-decode';
 
 export const login = (email, password) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -42,25 +41,8 @@ export const login = (email, password) => async (dispatch) => {
     );
   }
 };
-function isTokenExpired() {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    return true;
-  }
-
-  const decodedToken = jwtDecode(token);
-  const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
-  const currentTime = Date.now();
-
-  return expirationTime < currentTime;
-}
 
 export const logout = () => (dispatch) => {
-  if (isTokenExpired()) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userInfo');
-    dispatch(userLogout());
-  }
   localStorage.removeItem('userInfo');
   dispatch(userLogout());
 };

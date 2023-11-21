@@ -135,11 +135,13 @@ export default function NoteCard({ _note }) {
           >
             {title}
           </Heading>
-          <Text color={'gray.500'}>{description}</Text>
+          <Text color={useColorModeValue('gray.700', 'white')}>
+            {description}
+          </Text>
         </Stack>
         <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
           <Stack direction={'column'} spacing={0} fontSize={'sm'}>
-            <Text color={'gray.500'}>{date}</Text>
+            <Text color={useColorModeValue('gray.700', 'white')}>{date}</Text>
           </Stack>
         </Stack>
         <Stack

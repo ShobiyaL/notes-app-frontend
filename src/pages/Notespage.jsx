@@ -68,6 +68,7 @@ const Notespage = ({ notes }) => {
   let handleColor = (c) => {
     // console.log(c);
     dispatch(selectColor(c));
+    
   };
   let onSelectFont = (f) => {
     // console.log(f);

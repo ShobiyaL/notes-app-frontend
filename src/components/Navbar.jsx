@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -24,6 +24,8 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 import {
   HamburgerIcon,
   CloseIcon,
@@ -65,12 +67,28 @@ const Navbar = ({ handleSearch, searchText, handleSearchClick }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const toast = useToast();
   const user = useSelector((state) => state.user);
   // console.log(user);
   const { userInfo, token } = user;
 
-  const dispatch = useDispatch();
-  const toast = useToast();
+  // useEffect(() => {
+  //   const isTokenExpired = function () {
+  //     if (!token) {
+  //       return true;
+  //     }
+
+  //     const decodedToken = jwtDecode(token);
+  //     const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+  //     const currentTime = Date.now();
+
+  //     return expirationTime < currentTime;
+  //   };
+  //   if (!isTokenExpired()) {
+  //     dispatch(logout());
+  //   }
+  // }, [dispatch, token]);
 
   let logoutHandler = () => {
     dispatch(logout());

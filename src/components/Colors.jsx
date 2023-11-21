@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './colors.css';
+import { useSelector } from 'react-redux';
 
 const Colors = ({ handleColor }) => {
+  const { selectedColor } = useSelector((state) => state.notes);
+  console.log(selectedColor);
   const colors = ['#fe9b72', '#fec971', ' #00d4fe', '#b693fd', '#e4ee91'];
 
- 
   return (
     <div className='colors_container'>
       {/* <Icon
@@ -20,7 +22,11 @@ const Colors = ({ handleColor }) => {
           <li
             key={index}
             className='color_list_item'
-            style={{ backgroundColor: color }}
+            style={{
+              backgroundColor: color,
+              border: selectedColor === color ? '2px solid black' : 'none',
+              
+            }}
             onClick={() => handleColor(color)}
           />
         ))}
