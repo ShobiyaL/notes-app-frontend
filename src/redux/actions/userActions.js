@@ -58,6 +58,7 @@ function isTokenExpired() {
 export const logout = () => (dispatch) => {
   if (isTokenExpired()) {
     localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
     dispatch(userLogout());
   }
   localStorage.removeItem('userInfo');
