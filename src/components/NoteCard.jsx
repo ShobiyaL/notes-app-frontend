@@ -35,7 +35,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Colors from './Colors';
 import FontsPreference from '../components/FontsPreference';
 
-import { selectColor, setNote, updateNoteColor } from '../redux/slices/notes';
+import {
+  selectColor,
+  selectFont,
+  setNote,
+  updateNoteColor,
+} from '../redux/slices/notes';
 
 export default function NoteCard({ _note }) {
   // State for handling delete confirmation dialog
@@ -54,7 +59,7 @@ export default function NoteCard({ _note }) {
   const notesList = useSelector((state) => state.notes);
   // console.log(notesList);
   const cancelRef = useRef();
-  const { loading, error, selectedColor } = notesList;
+  const { loading, error, selectedColor, selectedFont } = notesList;
   // console.log(selectedColor);
 
   let date;
@@ -64,15 +69,26 @@ export default function NoteCard({ _note }) {
 
     date = day;
   }
-
-  let handleSubmit = () => {
-    dispatch(updateNote(_id, { title: tempTitle, description: tempDesc }));
-    onClose();
-  };
   let handleColor = (c) => {
-    // console.log(c);
+    console.log(c);
     dispatch(selectColor(c));
   };
+  let onSelectFont = (f) => {
+    console.log(f);
+    dispatch(selectFont(f));
+  };
+  let handleSubmit = () => {
+    dispatch(
+      updateNote(_id, {
+        title: tempTitle,
+        description: tempDesc,
+        color: selectedColor,
+        font: selectedFont,
+      })
+    );
+    onClose();
+  };
+
   const handleDeleteNote = (_id) => {
     // console.log(_id);
     setDeleteNoteId(_id);
@@ -94,15 +110,19 @@ export default function NoteCard({ _note }) {
   return (
     <Center py={6}>
       <Box
-        maxW={'445px'}
+        maxW={'200px'}
         w={'full'}
         // eslint-disable-next-line react-hooks/rules-of-hooks
-
-        bg={useColorModeValue(`${color ? color : 'white'}`, 'pink.900')}
+        maxH={'300px'}
+        bg={useColorModeValue(
+          `${color ? color : 'white'}`,
+          `${color ? color : 'pink.900'}`
+        )}
         boxShadow={'2xl'}
         rounded={'md'}
         p={6}
-        overflow={'hidden'}
+        // overflow={'hidden'}
+        overflowY={'auto'}
         // h='250px'
         fontFamily={font}
       >
@@ -167,8 +187,9 @@ export default function NoteCard({ _note }) {
                 </ModalBody>
 
                 <ModalFooter>
+                  <FontsPreference onSelectFont={onSelectFont} />
                   <Colors handleColor={handleColor} />
-                  <Button colorScheme='blue' mr={3} onClick={handleSubmit}>
+                  <Button colorScheme='blue' m={3} onClick={handleSubmit}>
                     Save
                   </Button>
                   <Button onClick={onClose}>Cancel</Button>

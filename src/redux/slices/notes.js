@@ -27,15 +27,15 @@ export const notesSlice = createSlice({
       state.selectedColor = '';
     },
     selectColor: (state, { payload }) => {
-      console.log(payload);
+      // console.log(payload);
       state.selectedColor = payload;
     },
     selectFont: (state, { payload }) => {
-      console.log(payload);
+      // console.log(payload);
       state.selectedFont = payload;
     },
     setNote: (state, { payload }) => {
-      console.log(payload);
+      // console.log(payload);
       state.notes = [...state.notes, payload];
     },
 

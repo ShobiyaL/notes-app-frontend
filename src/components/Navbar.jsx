@@ -67,7 +67,7 @@ const Navbar = ({ handleSearch, searchText, handleSearchClick }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   // console.log(user);
-  const { userInfo } = user;
+  const { userInfo, token } = user;
 
   const dispatch = useDispatch();
   const toast = useToast();
@@ -108,19 +108,23 @@ const Navbar = ({ handleSearch, searchText, handleSearchClick }) => {
             </Flex>
           </Link>
         </HStack>
-        <InputGroup onClick={handleSearchClick}>
-          <InputLeftElement pointerEvents='none'>
-            <SearchIcon />
-          </InputLeftElement>
-          <Input
-            variant='filled'
-            placeholder='Type to search..'
-            width={['100%', '80%', '60%', '40%']}
-            value={searchText}
-            onChange={(event) => handleSearch(event.target.value)}
-            // onClick={handleSearchClick}
-          />
-        </InputGroup>
+        {token ? (
+          <InputGroup onClick={handleSearchClick}>
+            <InputLeftElement pointerEvents='none'>
+              <SearchIcon />
+            </InputLeftElement>
+            <Input
+              variant='filled'
+              placeholder='Type to search..'
+              width={['100%', '80%', '60%', '40%']}
+              value={searchText}
+              onChange={(event) => handleSearch(event.target.value)}
+              // onClick={handleSearchClick}
+            />
+          </InputGroup>
+        ) : (
+          ''
+        )}
         <Flex alignItems='center'>
           <NavLink>
             <Icon

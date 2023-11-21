@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: null,
+  token: JSON.parse(localStorage.getItem('token') ?? null),
   userInfo: JSON.parse(localStorage.getItem('userInfo') ?? null),
 };
 
@@ -16,6 +17,9 @@ export const userSlice = createSlice({
     setError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
+    },
+    setToken: (state, { payload }) => {
+      state.token = payload;
     },
     userLogin: (state, { payload }) => {
       state.userInfo = payload;
@@ -35,7 +39,13 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setLoading, setError, userLogin, userLogout, userRegister } =
-  userSlice.actions;
+export const {
+  setLoading,
+  setError,
+  setToken,
+  userLogin,
+  userLogout,
+  userRegister,
+} = userSlice.actions;
 export default userSlice.reducer;
 export const userSelector = (state) => state.user;

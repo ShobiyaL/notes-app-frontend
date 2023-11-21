@@ -60,8 +60,8 @@ export const createNote = (note) => async (dispatch, getState) => {
       note,
       config
     );
-    console.log(data.data);
-    console.log(note.color);
+    // console.log(data.data);
+    // console.log(note.color);
     let result = data.data;
     let color = note.color;
     let font = note.font;
@@ -101,7 +101,11 @@ export const updateNote = (_id, note) => async (dispatch, getState) => {
     );
 
     // console.log(data.data);
-    dispatch(editNote(data.data));
+    let result = data.data;
+    let color = note.color;
+    let font = note.font;
+    dispatch(editNote({ ...result, color, font }));
+    // dispatch(editNote(data.data));
   } catch (error) {
     console.log(error);
     dispatch(

@@ -115,7 +115,7 @@ const Notespage = ({ notes }) => {
             <WrapItem key={note._id}>
               {/* <Center w='250px' h='550px'> */}
               <Center w='250px'>
-                <NoteCard _note={note} handleColor={handleColor} />
+                <NoteCard _note={note} handleColor={handleColor} onSelectFont={onSelectFont}/>
               </Center>
             </WrapItem>
           );
